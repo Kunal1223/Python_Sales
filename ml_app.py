@@ -36,7 +36,7 @@ def load_model(model_file):
 
 
 def run_ml():
-	st.subheader("Black Friday Sales Predictor")
+	st.subheader("This is best sales predictor app")
 	col1,col2 = st.columns(2)
 
 	with col1:
@@ -44,18 +44,17 @@ def run_ml():
 		age = st.number_input("Age",1,75)
 		occupation = st.number_input("Occupation",1,20)
 		city_category = st.selectbox("City Category",["A","B","C"])
-		stay_in_current_city = st.number_input("No of Years of Stay in Current City",1,10)
+		stay_in_current_city = st.number_input("Number of years to predict for",1,5)
 	
 	with col2:
 		marital_status = st.radio("Marital Status",("Single","Married"))
-		product_category_1 = st.number_input("Product 1",1,20)
-		product_category_2 = st.number_input("Product 2",1,20)
-		product_category_3 = st.number_input("Product 3",1,20)
+		product_category_1 = st.number_input("Product 1",1,5)
+		product_category_2 = st.number_input("Product 2",1,5)
+		product_category_3 = st.number_input("Product 3",1,5)
 
 	selected_options = {'Gender':gender,'Age':age,'Occupation':occupation, 'City_Category':city_category,
-	'Stay_In_Current_City_Years':stay_in_current_city, 'Marital_Status':marital_status, 'Product_Category_1':product_category_1,
+	'Number of years to predict for':stay_in_current_city, 'Marital_Status':marital_status, 'Product_Category_1':product_category_1,
 	'Product_Category_2':product_category_2, 'Product_Category_3':product_category_3}
-
 
 	gender_en = get_value(gender,gender_dict)
 	city_category_en = get_value(city_category,city_dict)
@@ -69,8 +68,8 @@ def run_ml():
 		# st.write(scaled_sample)
 		sample = np.array(single_sample).reshape(1,-1)
 		model = load_model("models/lr2_bf_sales_model_23_oct.pkl")
-		prediction = model.predict(sample)
+		prediction = stay_in_current_city*80*model.predict(sample)
 
 		st.info("Predicted Purchase")
-		st.write("Purchased:${}".format(prediction[0]))
+		st.write("Purchased:₹ {}".format(prediction[0]))
 		st.balloons()
